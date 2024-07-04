@@ -16,7 +16,7 @@
 ```
 npm install -g @angular/cli
 ```
-4.    Instalar librerías
+4.    Instalar librerías en la carpeta del proyecto
 ```
 npm install
 ```
