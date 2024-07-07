@@ -1,0 +1,55 @@
+<!-- src/app/demo/components/medico-gestion-horario/medico-gestion-horario.component.html -->
+<h1>Gestión de Horario</h1>
+
+<div class="calendar-container">
+  <table class="calendar-table">
+    <thead>
+      <tr>
+        <th *ngFor="let day of weekDays">{{ day.name }}<br>{{ day.date | date: 'shortDate' }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td *ngFor="let day of weekDays">
+          <div *ngFor="let appointment of day.appointments">
+            {{ appointment.time | date: 'shortTime' }} - {{ appointment.description }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button pButton type="button" label="Crear Disponibilidad" (click)="showAddAvailabilityDialog()"></button>
+
+<p-dialog header="Agregar Disponibilidad" [(visible)]="displayAddAvailability" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
+  <form (ngSubmit)="onAddAvailability()" #availabilityForm="ngForm">
+    <div class="p-field">
+      <label for="days">Día</label>
+      <p-dropdown 
+        [options]="daysOptions" 
+        [(ngModel)]="selectedDay" 
+        name="day" 
+        optionLabel="name"
+        placeholder="Seleccione un día">
+      </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="time">Hora</label>
+      <p-calendar 
+        [(ngModel)]="selectedTime" 
+        name="time" 
+        timeOnly="true" 
+        hourFormat="24">
+      </p-calendar>
+    </div>
+    <div class="p-field">
+      <label for="description">Descripción</label>
+      <input type="text" pInputText [(ngModel)]="description" name="description">
+    </div>
+    <div class="p-dialog-footer">
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" (click)="displayAddAvailability=false"></button>
+      <button pButton type="submit" label="Agregar" icon="pi pi-check" [disabled]="!availabilityForm.form.valid"></button>
+    </div>
+  </form>
+</p-dialog>

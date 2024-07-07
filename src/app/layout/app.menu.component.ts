@@ -1,5 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { LayoutService } from './service/app.layout.service';
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+    doctorModel: any[] = [];
+    isDoctorRoute: boolean = false;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, private router: Router) { }
 
     ngOnInit() {
         this.model = [
@@ -161,5 +164,43 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
+
+        this.doctorModel = [
+            {
+                label: 'Doctor Home',
+                items: [
+                    { label: 'Doctor Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/medico'] }
+                ]
+            },
+            {
+                label: 'Gestión de Horario',
+                items: [
+                    { label: 'Gestión de Horario', icon: 'pi pi-fw pi-calendar', routerLink: ['/medico/horario'] }
+                ]
+            },            
+            {
+                label: 'Doctor Components',
+                items: [
+                    { label: 'Doctor Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/medico/formlayout'] },
+                    { label: 'Doctor Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/medico/input'] },
+                    // Otros ítems...
+                ]
+            },
+            // Otros ítems...
+        ];        
+        this.router.events.subscribe((event) => {
+            if (this.router.url.startsWith('/medico')) {
+                this.isDoctorRoute = true;
+            } else {
+                this.isDoctorRoute = false;
+            }
+        });
+
+        // Inicialmente verificar la ruta
+        if (this.router.url.startsWith('/medico')) {
+            this.isDoctorRoute = true;
+        }        
     }
 }
+
+
