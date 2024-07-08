@@ -1,55 +1,57 @@
-<!-- src/app/demo/components/medico-gestion-horario/medico-gestion-horario.component.html -->
-<h1>Gestión de Horario</h1>
-
-<div class="calendar-container">
-  <table class="calendar-table">
-    <thead>
-      <tr>
-        <th *ngFor="let day of weekDays">{{ day.name }}<br>{{ day.date | date: 'shortDate' }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td *ngFor="let day of weekDays">
-          <div *ngFor="let appointment of day.appointments">
-            {{ appointment.time | date: 'shortTime' }} - {{ appointment.description }}
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<button pButton type="button" label="Crear Disponibilidad" (click)="showAddAvailabilityDialog()"></button>
-
-<p-dialog header="Agregar Disponibilidad" [(visible)]="displayAddAvailability" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
-  <form (ngSubmit)="onAddAvailability()" #availabilityForm="ngForm">
-    <div class="p-field">
-      <label for="days">Día</label>
-      <p-dropdown 
-        [options]="daysOptions" 
-        [(ngModel)]="selectedDay" 
-        name="day" 
-        optionLabel="name"
-        placeholder="Seleccione un día">
-      </p-dropdown>
+<div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h5>Gestión de Horario Médico</h5>
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr class="header-row">
+                <th class="button-cell" [attr.rowspan]="maxRows.length + 1">
+                  <button pButton type="button" icon="pi pi-arrow-left" class="vertical-button" (click)="prevWeek()"></button>
+                </th>
+                <th *ngFor="let day of weekDays" class="header-cell">{{ day | titlecase }}<br>{{ weekDates[day] | date: 'dd MMM' }}</th>
+                <th class="button-cell" [attr.rowspan]="maxRows.length + 1">
+                  <button pButton type="button" icon="pi pi-arrow-right" class="vertical-button" (click)="nextWeek()"></button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of maxRows; let i = index">
+                <td class="empty-cell"></td> <!-- Columna vacía para mantener el espacio del botón izquierdo -->
+                <td *ngFor="let day of weekDays">
+                  <ng-container *ngIf="appointments[day][i]; else emptyCell">
+                    <div class="appointment-cell">
+                      <div class="appointment-description">{{ appointments[day][i].description }}</div>
+                      <button type="button" pButton icon="pi pi-chevron-down" class="appointment-button" (click)="toggleMenu($event, menu)"></button>
+                      <p-menu #menu [popup]="true" [model]="appointmentMenu(appointments[day][i])" [appendTo]="'body'"></p-menu>
+                    </div>
+                  </ng-container>
+                  <ng-template #emptyCell>
+                    <!-- Celda vacía -->
+                  </ng-template>
+                </td>
+                <td class="empty-cell"></td> <!-- Columna vacía para mantener el espacio del botón derecho -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button pButton type="button" icon="pi pi-plus" label="Crear Cita" class="create-appointment-button" (click)="showDialog()"></button>
+      </div>
     </div>
-    <div class="p-field">
-      <label for="time">Hora</label>
-      <p-calendar 
-        [(ngModel)]="selectedTime" 
-        name="time" 
-        timeOnly="true" 
-        hourFormat="24">
-      </p-calendar>
+  </div>
+  
+  <p-dialog header="Nueva Cita" [(visible)]="display" [modal]="true" [responsive]="true" [style]="{width: '300px'}">
+    <div class="form-group">
+      <label for="fecha">Fecha</label>
+      <input type="date" pInputText id="fecha" [(ngModel)]="newAppointmentDate">
     </div>
-    <div class="p-field">
-      <label for="description">Descripción</label>
-      <input type="text" pInputText [(ngModel)]="description" name="description">
+    <div class="form-group">
+      <label for="hora">Hora</label>
+      <input type="time" pInputText id="hora" [(ngModel)]="newAppointmentTime">
     </div>
-    <div class="p-dialog-footer">
-      <button pButton type="button" label="Cancelar" icon="pi pi-times" (click)="displayAddAvailability=false"></button>
-      <button pButton type="submit" label="Agregar" icon="pi pi-check" [disabled]="!availabilityForm.form.valid"></button>
-    </div>
-  </form>
-</p-dialog>
+    <p-footer>
+      <button type="button" pButton icon="pi pi-check" label="Crear" (click)="createAppointment()"></button>
+      <button type="button" pButton icon="pi pi-times" label="Cancelar" (click)="display=false"></button>
+    </p-footer>
+  </p-dialog>
+  

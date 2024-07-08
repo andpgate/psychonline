@@ -11,6 +11,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table'; // Importar TableModule para la tabla
+import { SplitButtonModule } from 'primeng/splitbutton'; // Importar SplitButtonModule para el botón dividido
+import { MenuModule } from 'primeng/menu'; // Importar MenuModule para el menú desplegable
 
 @NgModule({
   declarations: [MedicoGestionHorarioComponent],
@@ -23,7 +25,9 @@ import { TableModule } from 'primeng/table'; // Importar TableModule para la tab
     CalendarModule,
     ButtonModule,
     InputTextModule,
-    TableModule // Asegúrate de importar TableModule
+    TableModule, // Asegúrate de importar TableModule
+    SplitButtonModule, // Asegúrate de importar SplitButtonModule
+    MenuModule // Asegúrate de importar MenuModule
   ]
 })
 export class MedicoGestionHorarioModule { }

@@ -1,113 +1,126 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+
+interface Appointment {
+  description: string;
+}
 
 @Component({
   selector: 'app-medico-gestion-horario',
-  templateUrl: './medico-gestion-horario.component.html'
+  templateUrl: './medico-gestion-horario.component.html',
+  styleUrls: ['./medico-gestion-horario.component.scss']
 })
 export class MedicoGestionHorarioComponent implements OnInit {
-  weekDays: any[] = [];
-  daysOptions: any[];
-  selectedDay: any;
-  selectedTime: Date;
-  description: string;
-  displayAddAvailability: boolean = false;
+  weekDays: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+  appointments: { [key: string]: Appointment[] } = {
+    lunes: [],
+    martes: [],
+    miercoles: [],
+    jueves: [],
+    viernes: [],
+    sabado: [],
+    domingo: []
+  };
+  maxRows: number[] = [];
+  weekDates: { [key: string]: Date } = {};
 
-  constructor() {
-    this.daysOptions = [
-      { name: 'Lunes', code: 'MO' },
-      { name: 'Martes', code: 'TU' },
-      { name: 'Miércoles', code: 'WE' },
-      { name: 'Jueves', code: 'TH' },
-      { name: 'Viernes', code: 'FR' },
-      { name: 'Sábado', code: 'SA' },
-      { name: 'Domingo', code: 'SU' }
-    ];
+  currentDate: Date = new Date();
+  display: boolean = false;
+  newAppointmentDate: string = '';
+  newAppointmentTime: string = '';
+
+  ngOnInit() {
+    this.calculateWeekDates();
+
+    // Ejemplo de citas
+    this.appointments = {
+      lunes: [{ description: 'Cita 1' }, { description: 'Cita 2' }],
+      martes: [{ description: 'Cita 1' }, { description: 'Cita 2' }, { description: 'Cita 3' }, { description: 'Cita 4' }, { description: 'Cita 5' }],
+      miercoles: [{ description: 'Cita 1' }, { description: 'Cita 2' }, { description: 'Cita 3' }],
+      jueves: [{ description: 'Cita 1' }],
+      viernes: [],
+      sabado: [{ description: 'Cita 1' }, { description: 'Cita 2' }],
+      domingo: [{ description: 'Cita 1' }]
+    };
+
+    // Calcular el número máximo de filas necesarias
+    this.calculateMaxRows();
   }
 
-  ngOnInit(): void {
-    this.initializeWeekDays();
-  }
+  calculateWeekDates() {
+    const startOfWeek = this.getStartOfWeek(this.currentDate);
 
-  initializeWeekDays() {
-    const today = new Date();
-    const startOfWeek = today.getDate() - today.getDay();
-
-    const mondayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 1, 9, 0), description: 'Consulta General' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 1, 11, 0), description: 'Revisión' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 1, 14, 0), description: 'Cita de Control' }
-    ];
-
-    const tuesdayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 2, 10, 0), description: 'Consulta General' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 2, 13, 0), description: 'Revisión' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 2, 15, 0), description: 'Cita de Control' }
-    ];
-
-    const wednesdayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 3, 9, 0), description: 'Consulta General' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 3, 11, 0), description: 'Revisión' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 3, 13, 0), description: 'Cita de Control' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 3, 15, 0), description: 'Seguimiento' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 3, 17, 0), description: 'Consulta Especial' }
-    ];
-
-    const thursdayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 4, 12, 0), description: 'Revisión' }
-    ];
-
-    const fridayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 5, 9, 0), description: 'Consulta General' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 5, 11, 0), description: 'Revisión' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 5, 13, 0), description: 'Cita de Control' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 5, 15, 0), description: 'Seguimiento' },
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 5, 17, 0), description: 'Consulta Especial' }
-    ];
-
-    const saturdayAppointments = [
-      { time: new Date(today.getFullYear(), today.getMonth(), startOfWeek + 6, 9, 0), description: 'Consulta General' }
-    ];
-
-    const sundayAppointments = []; // No appointments
-
-    const appointmentsData = [
-      mondayAppointments,
-      tuesdayAppointments,
-      wednesdayAppointments,
-      thursdayAppointments,
-      fridayAppointments,
-      saturdayAppointments,
-      sundayAppointments
-    ];
-
-    this.weekDays = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(today);
-      date.setDate(startOfWeek + i);
-      return {
-        name: this.daysOptions[i].name,
-        date: new Date(date), // Ensure a new Date object
-        appointments: appointmentsData[i]
-      };
+    this.weekDays.forEach((day, index) => {
+      const currentDate = new Date(startOfWeek);
+      currentDate.setDate(startOfWeek.getDate() + index);
+      this.weekDates[day] = currentDate;
     });
   }
 
-  showAddAvailabilityDialog() {
-    this.displayAddAvailability = true;
+  getStartOfWeek(date: Date): Date {
+    const startOfWeek = new Date(date);
+    const dayOfWeek = startOfWeek.getDay();
+    const dayOffset = (dayOfWeek + 6) % 7; // Ajustar para que Lunes sea el primer día
+    startOfWeek.setDate(startOfWeek.getDate() - dayOffset);
+    return startOfWeek;
   }
 
-  onAddAvailability() {
-    const selectedDay = this.weekDays.find(day => day.name === this.selectedDay.name);
-    if (selectedDay) {
-      selectedDay.appointments.push({
-        time: this.selectedTime,
-        description: this.description
-      });
-    }
-    this.displayAddAvailability = false;
+  calculateMaxRows() {
+    const maxAppointments = Math.max(...Object.values(this.appointments).map(day => day.length));
+    this.maxRows = Array(maxAppointments).fill(0).map((x, i) => i);
+  }
 
-    // Reset form fields
-    this.selectedDay = null;
-    this.selectedTime = null;
-    this.description = '';
+  prevWeek() {
+    this.adjustWeek(-7);
+  }
+
+  nextWeek() {
+    this.adjustWeek(7);
+  }
+
+  adjustWeek(days: number) {
+    this.currentDate.setDate(this.currentDate.getDate() + days);
+    this.calculateWeekDates();
+  }
+
+  showDialog() {
+    this.display = true;
+  }
+
+  createAppointment() {
+    const selectedDate = new Date(this.newAppointmentDate);
+    const selectedDay = this.weekDays[selectedDate.getDay() - 1];
+    this.appointments[selectedDay].push({ description: `Cita a las ${this.newAppointmentTime}` });
+    this.calculateMaxRows();
+    this.display = false;
+  }
+
+  appointmentMenu(appointment: Appointment): MenuItem[] {
+    return [
+      {
+        label: 'Eliminar',
+        icon: 'pi pi-trash',
+        command: () => this.deleteAppointment(appointment)
+      },
+      {
+        label: 'Más Información',
+        icon: 'pi pi-info-circle',
+        command: () => this.moreInfo(appointment)
+      }
+    ];
+  }
+
+  toggleMenu(event: Event, menu: any) {
+    menu.toggle(event);
+  }
+
+  deleteAppointment(appointment: Appointment) {
+    // Lógica para eliminar la cita
+    console.log('Eliminar cita', appointment);
+  }
+
+  moreInfo(appointment: Appointment) {
+    // Lógica para mostrar más información
+    console.log('Más información', appointment);
   }
 }

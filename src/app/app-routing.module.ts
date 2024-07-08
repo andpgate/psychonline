@@ -17,7 +17,8 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
                     { path: 'profile', loadChildren: () => import('./demo/components/profile/profile.module').then(m => m.ProfileModule) },
                     { path: 'medico', loadChildren: () => import('./demo/components/medico/medico.module').then(m => m.MedicoModule) },
-                    { path: 'medico/horario', loadChildren: () => import('./demo/components/medico-gestion-horario/medico-gestion-horario.module').then(m => m.MedicoGestionHorarioModule) }
+                    { path: 'medico/horario', loadChildren: () => import('./demo/components/medico-gestion-horario/medico-gestion-horario.module').then(m => m.MedicoGestionHorarioModule) },
+                    { path: 'medico/cita/informacion', loadChildren: () => import('./demo/components/informacion-cita/informacion-cita.module').then(m => m.InformacionCitaModule) }
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
