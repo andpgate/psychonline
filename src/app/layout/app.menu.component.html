@@ -1,11 +1,22 @@
 <ul class="layout-menu">
-    <ng-container *ngFor="let item of model; let i = index;">
-        <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-        <li *ngIf="item.separator" class="menu-separator"></li>
+    <ng-container *ngIf="isDoctorRoute; else patientMenu">
+        <ng-container *ngFor="let item of doctorModel; let i = index;">
+            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+            <li *ngIf="item.separator" class="menu-separator"></li>
+        </ng-container>
     </ng-container>
-    <li>
-        <a href="https://www.primefaces.org/primeblocks-ng/#/">
-            <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'banner-primeblocks' : 'banner-primeblocks-dark'}}.png" alt="Prime Blocks" class="w-full mt-3"/>
-        </a>
-    </li>
+    <ng-template #patientMenu>
+        <ng-container *ngIf="isPatientRoute; else defaultMenu">
+            <ng-container *ngFor="let item of patientModel; let i = index;">
+                <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+                <li *ngIf="item.separator" class="menu-separator"></li>
+            </ng-container>
+        </ng-container>
+    </ng-template>
+    <ng-template #defaultMenu>
+        <ng-container *ngFor="let item of model; let i = index;">
+            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+            <li *ngIf="item.separator" class="menu-separator"></li>
+        </ng-container>
+    </ng-template>
 </ul>

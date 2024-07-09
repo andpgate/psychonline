@@ -1,0 +1,24 @@
+<div class="paciente-info-container">
+    <h2>Información del Paciente</h2>
+    <div class="paciente-info">
+      <p><strong>Nombre:</strong> {{ paciente.nombre }}</p>
+      <p><strong>Email:</strong> {{ paciente.email }}</p>
+      <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+    </div>
+  
+    <div class="nueva-historia">
+      <h3>Agregar Nueva Historia</h3>
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" [(ngModel)]="nuevaHistoria.descripcion"></textarea>
+      <button (click)="agregarHistoria()">Agregar Historia</button>
+    </div>
+  
+    <div class="historias">
+      <h3>Historias del Paciente</h3>
+      <div *ngFor="let historia of historias" class="historia-card">
+        <p><strong>Fecha:</strong> {{ historia.fecha }}</p>
+        <p><strong>Descripción:</strong> {{ historia.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+  

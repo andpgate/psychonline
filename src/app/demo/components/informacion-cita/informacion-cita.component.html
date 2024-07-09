@@ -1,0 +1,30 @@
+<div class="info-container">
+    <div class="info-card">
+      <h2>Información de la Cita</h2>
+      <div class="info-item">
+        <span class="label">Médico:</span>
+        <span class="value">{{ doctor }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Paciente:</span>
+        <span class="value">{{ patient }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Día:</span>
+        <span class="value">{{ date | date: 'fullDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Hora:</span>
+        <span class="value">{{ time }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span class="value">{{ status }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Descripción:</span>
+        <span class="value">{{ description }}</span>
+      </div>
+    </div>
+  </div>
+  

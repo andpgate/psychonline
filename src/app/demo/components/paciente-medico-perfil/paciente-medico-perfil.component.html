@@ -1,0 +1,56 @@
+<div class="profile-container">
+    <div class="profile-header">
+      <h2>{{ doctor.name }}</h2>
+      <p>Email: {{ doctor.email }}</p>
+      <p>Especialidad: {{ doctor.specialty }}</p>
+      <p>Títulos:</p>
+      <ul>
+        <li *ngFor="let title of doctor.titles">{{ title }}</li>
+      </ul>
+      <button pButton type="button" label="Solicitar Cita" (click)="requestAppointment()"></button>
+    </div>
+  
+    <div class="profile-rating">
+      <h3>Calificación</h3>
+      <p-rating [(ngModel)]="doctor.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+      <p>{{ doctor.rating }} estrellas</p>
+    </div>
+  
+    <div class="add-comment">
+      <h3>Agregar Comentario y Calificación</h3>
+      <p-rating [(ngModel)]="newRating" stars="5"></p-rating>
+      <textarea [(ngModel)]="newComment" rows="3" placeholder="Escribe tu comentario"></textarea>
+      <button pButton type="button" label="Agregar" (click)="addComment()"></button>
+    </div>
+  
+    <div class="profile-comments">
+      <h3>Comentarios y Calificaciones</h3>
+      <div *ngFor="let comment of comments" class="comment">
+        <p-rating [(ngModel)]="comment.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+        <p>{{ comment.text }}</p>
+        <small>{{ comment.date | date: 'short' }}</small>
+      </div>
+    </div>
+  
+    <p-dialog header="Nueva Cita" [(visible)]="display" [modal]="true" [responsive]="true" [style]="{width: '300px'}">
+      <div class="form-group">
+        <label for="doctorName">Médico</label>
+        <input type="text" id="doctorName" [value]="doctor.name" pInputText disabled />
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="fecha">Fecha</label>
+        <input type="date" pInputText id="fecha" [(ngModel)]="newAppointmentDate">
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="hora">Hora</label>
+        <input type="time" pInputText id="hora" [(ngModel)]="newAppointmentTime">
+      </div>
+      <p-footer>
+        <button type="button" pButton icon="pi pi-check" label="Crear" (click)="createAppointment()"></button>
+        <button type="button" pButton icon="pi pi-times" label="Cancelar" (click)="closeDialog()"></button>
+      </p-footer>
+    </p-dialog>
+  </div>
+  
