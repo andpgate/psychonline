@@ -1,6 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
@@ -11,7 +11,9 @@ export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
     doctorModel: any[] = [];
+    patientModel: any[] = [];
     isDoctorRoute: boolean = false;
+    isPatientRoute: boolean = false;
 
     constructor(public layoutService: LayoutService, private router: Router) { }
 
@@ -175,32 +177,65 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Gestión de Horario',
                 items: [
-                    { label: 'Gestión de Horario', icon: 'pi pi-fw pi-calendar', routerLink: ['/medico/horario'] }
+                    { label: 'Mi Horario', icon: 'pi pi-fw pi-calendar', routerLink: ['/medico/horario'] },
+                    { label: 'Solicitudes', icon: 'pi pi-fw pi-envelope', routerLink: ['/medico/citas/solicitudes'] }
                 ]
-            },            
+            },
             {
-                label: 'Doctor Components',
+                label: 'Pacientes',
                 items: [
-                    { label: 'Doctor Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/medico/formlayout'] },
-                    { label: 'Doctor Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/medico/input'] },
-                    // Otros ítems...
+                    { label: 'Mis Pacientes', icon: 'pi pi-users', routerLink: ['/medico/pacientes'] }
                 ]
             },
             // Otros ítems...
         ];        
+        this.patientModel = [
+            {
+                label: 'Patient Home',
+                items: [
+                    { label: 'Patient Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/paciente'] }
+                ]
+            },
+            {
+                label: 'Gestión de Citas',
+                items: [
+                    { label: 'Ver Citas', icon: 'pi pi-fw pi-calendar', routerLink: ['/paciente/citas'] }
+                ]
+            },
+            {
+                label: 'Nuestros Médicos',
+                items: [
+                    { label: 'Ver Médicos', icon: 'pi pi-fw pi-users', routerLink: ['/paciente/medicos'] }
+                ]
+            },
+            // Otros ítems...
+        ];
+
         this.router.events.subscribe((event) => {
-            if (this.router.url.startsWith('/medico')) {
-                this.isDoctorRoute = true;
-            } else {
-                this.isDoctorRoute = false;
+            if (event instanceof NavigationEnd) {
+                if (this.router.url.startsWith('/medico')) {
+                    this.isDoctorRoute = true;
+                    this.isPatientRoute = false;
+                } else if (this.router.url.startsWith('/paciente')) {
+                    this.isDoctorRoute = false;
+                    this.isPatientRoute = true;
+                } else {
+                    this.isDoctorRoute = false;
+                    this.isPatientRoute = false;
+                }
             }
         });
 
         // Inicialmente verificar la ruta
         if (this.router.url.startsWith('/medico')) {
             this.isDoctorRoute = true;
+            this.isPatientRoute = false;
+        } else if (this.router.url.startsWith('/paciente')) {
+            this.isDoctorRoute = false;
+            this.isPatientRoute = true;
+        } else {
+            this.isDoctorRoute = false;
+            this.isPatientRoute = false;
         }        
     }
 }
-
-

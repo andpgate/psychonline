@@ -26,8 +26,11 @@ export class MedicoGestionHorarioComponent implements OnInit {
 
   currentDate: Date = new Date();
   display: boolean = false;
+  displayCancel: boolean = false;
   newAppointmentDate: string = '';
   newAppointmentTime: string = '';
+  cancelReason: string = '';
+  selectedAppointment: Appointment | null = null;
 
   ngOnInit() {
     this.calculateWeekDates();
@@ -100,7 +103,7 @@ export class MedicoGestionHorarioComponent implements OnInit {
       {
         label: 'Eliminar',
         icon: 'pi pi-trash',
-        command: () => this.deleteAppointment(appointment)
+        command: () => this.confirmDeleteAppointment(appointment)
       },
       {
         label: 'Más Información',
@@ -114,13 +117,40 @@ export class MedicoGestionHorarioComponent implements OnInit {
     menu.toggle(event);
   }
 
-  deleteAppointment(appointment: Appointment) {
-    // Lógica para eliminar la cita
-    console.log('Eliminar cita', appointment);
+  confirmDeleteAppointment(appointment: Appointment) {
+    this.selectedAppointment = appointment;
+    this.displayCancel = true;
+  }
+
+  deleteAppointment() {
+    if (this.cancelReason.trim() === '') {
+      alert('Por favor, ingrese el motivo de cancelación.');
+      return;
+    }
+
+    if (this.selectedAppointment) {
+      // Encuentra el día de la cita seleccionada
+      const day = this.weekDays.find(day => this.appointments[day].includes(this.selectedAppointment!));
+      if (day) {
+        // Elimina la cita del día correspondiente
+        this.appointments[day] = this.appointments[day].filter(a => a !== this.selectedAppointment);
+        this.calculateMaxRows();
+      }
+      console.log('Eliminar cita', this.selectedAppointment, 'Motivo:', this.cancelReason);
+      this.selectedAppointment = null;
+      this.cancelReason = '';
+      this.displayCancel = false;
+    }
   }
 
   moreInfo(appointment: Appointment) {
     // Lógica para mostrar más información
     console.log('Más información', appointment);
+  }
+
+  closeCancelDialog() {
+    this.selectedAppointment = null;
+    this.cancelReason = '';
+    this.displayCancel = false;
   }
 }

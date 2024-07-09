@@ -1,0 +1,12 @@
+<div class="solicitudes-container">
+    <h2>Solicitudes de Citas</h2>
+    <div *ngFor="let solicitud of solicitudes" class="solicitud-card">
+      <p><strong>ID:</strong> {{ solicitud.id }}</p>
+      <p><strong>Persona:</strong> {{ solicitud.persona }}</p>
+      <p><strong>Fecha:</strong> {{ solicitud.fecha }}</p>
+      <p><strong>Hora:</strong> {{ solicitud.hora }}</p>
+      <button (click)="aceptarSolicitud(solicitud.id)" class="accept-btn">Aceptar</button>
+      <button (click)="rechazarSolicitud(solicitud.id)" class="reject-btn">Rechazar</button>
+    </div>
+  </div>
+  

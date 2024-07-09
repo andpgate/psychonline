@@ -1,0 +1,10 @@
+<div class="pacientes-container">
+    <h2>Mis Pacientes</h2>
+    <div *ngFor="let paciente of pacientes" class="paciente-card">
+      <p><strong>Nombre:</strong> {{ paciente.nombre }}</p>
+      <p><strong>Email:</strong> {{ paciente.email }}</p>
+      <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+      <button (click)="verMasInformacion(paciente)" class="info-btn">Más Información</button>
+    </div>
+  </div>
+  

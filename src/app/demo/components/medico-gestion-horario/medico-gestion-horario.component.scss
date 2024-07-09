@@ -1,83 +1,82 @@
 .table-container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-  }
-  
-  .custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-  }
-  
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.custom-table th, .custom-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-left: none;
+}
+
+.custom-table .button-cell {
+  background-color: white;
+  border: none;
+  vertical-align: middle; /* Ajusta la alineación vertical */
+  padding: 0;
+}
+
+.custom-table .header-row .header-cell {
+  background-color: #e0f7fa; /* Color distinto para las celdas del encabezado */
+}
+
+.custom-table tbody tr {
+  background-color: #fff; /* Color blanco por defecto para las filas del cuerpo */
+}
+
+.custom-table .empty-cell {
+  border: none; /* Eliminar bordes para las celdas vacías */
+}
+
+.custom-table .vertical-button {
+  height: 100%; /* Altura completa */
+  width: 100%; /* Ancho completo */
+}
+
+.create-appointment-button {
+  margin-top: 20px; /* Ajusta este valor según el espacio deseado */
+}
+
+.form-group {
+  margin-bottom: 15px; /* Ajusta este valor según el espacio deseado */
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"] {
+  padding-right: 20px; /* Añadir espacio a la derecha */
+}
+
+.appointment-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appointment-description {
+  flex: 1;
+}
+
+.appointment-button {
+  margin-left: 10px;
+}
+
+@media (max-width: 768px) {
   .custom-table th, .custom-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-right: none;
-    border-left: none;
+    padding: 5px;
   }
-  
-  .custom-table .button-cell {
-    background-color: white;
-    border: none;
-    vertical-align: middle; /* Ajusta la alineación vertical */
-    padding: 0;
+
+  .vertical-button {
+    height: auto;
+    width: auto;
   }
-  
-  .custom-table .header-row .header-cell {
-    background-color: #e0f7fa; /* Color distinto para las celdas del encabezado */
-  }
-  
-  .custom-table tbody tr {
-    background-color: #fff; /* Color blanco por defecto para las filas del cuerpo */
-  }
-  
-  .custom-table .empty-cell {
-    border: none; /* Eliminar bordes para las celdas vacías */
-  }
-  
-  .custom-table .vertical-button {
-    height: 100%; /* Altura completa */
-    width: 100%; /* Ancho completo */
-  }
-  
-  .create-appointment-button {
-    margin-top: 20px; /* Ajusta este valor según el espacio deseado */
-  }
-  
-  .form-group {
-    margin-bottom: 15px; /* Ajusta este valor según el espacio deseado */
-  }
-  
-  .form-group input[type="date"],
-  .form-group input[type="time"] {
-    padding-right: 20px; /* Añadir espacio a la derecha */
-  }
-  
-  .appointment-cell {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .appointment-description {
-    flex: 1;
-  }
-  
-  .appointment-button {
-    margin-left: 10px;
-  }
-  
-  @media (max-width: 768px) {
-    .custom-table th, .custom-table td {
-      padding: 5px;
-    }
-  
-    .vertical-button {
-      height: auto;
-      width: auto;
-    }
-  }
-  
+}
