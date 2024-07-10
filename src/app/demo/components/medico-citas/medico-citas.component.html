@@ -1,0 +1,24 @@
+<div class="citas-container">
+    <h2>Citas Programadas y Realizadas</h2>
+    <div class="citas-grid">
+        <ng-container *ngFor="let cita of citas">
+            <div *ngIf="citaRealizada(cita)" class="cita-card">
+                <p><strong>Paciente:</strong> {{ cita.nombrePaciente }}</p>
+                <p><strong>Fecha:</strong> {{ cita.fecha | date: 'dd/MM/yyyy' }}</p>
+                <p><strong>Hora:</strong> {{ cita.hora | date: 'shortTime' }}</p>
+                <button pButton type="button" label="Añadir Historia" class="add-history-button" (click)="openHistoriaModal(cita)"></button>
+            </div>
+        </ng-container>
+    </div>
+
+    <p-dialog header="Añadir Historia" [(visible)]="displayHistoriaModal" [modal]="true" [responsive]="true" [style]="{width: '400px'}">
+        <div class="form-group modal-content">
+            <label for="historia">Historia de la Cita</label>
+            <textarea id="historia" [(ngModel)]="historia" pInputTextarea required class="historia-textarea"></textarea>
+        </div>
+        <p-footer class="p-dialog-footer">
+            <button type="button" pButton icon="pi pi-times" label="Cancelar" (click)="closeHistoriaModal()"></button>
+            <button type="button" pButton icon="pi pi-check" label="Confirmar" (click)="finalizarCita()"></button>
+        </p-footer>
+    </p-dialog>
+</div>

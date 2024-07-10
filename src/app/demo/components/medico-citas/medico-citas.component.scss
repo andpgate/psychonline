@@ -1,0 +1,67 @@
+.citas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.citas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.cita-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.cita-card p {
+    margin: 5px 0;
+}
+
+.add-history-button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.p-dialog .p-dialog-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.modal-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.historia-textarea {
+    flex-grow: 1;
+    width: 100%;
+    height: 100px; /* Ajusta la altura según sea necesario */
+}
+
+/* Estilo para centrar los botones en el pie de la modal */
+.p-dialog .p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-dialog-footer .ui-button {
+    margin: 0 10px; /* Espacio entre botones */
+}
+
+/* Ajuste adicional para asegurar el centrado */
+.p-dialog-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

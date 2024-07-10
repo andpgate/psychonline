@@ -1,1 +1,19 @@
-<p>profile works!</p>
+<div class="profile-container">
+  <div class="profile-header">
+    <img [src]="profile.imageUrl" alt="Profile Image" class="profile-image">
+    <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
+    <p class="username">Nombre de usuario: {{ profile.username }}</p>
+    <p class="email">Email: {{ profile.email }}</p>
+    <p class="phone">Teléfono: {{ profile.phone }}</p>
+  </div>
+
+  <div class="profile-details">
+    <h3>Especialidad</h3>
+    <p>{{ profile.specialty }}</p>
+
+    <h3>Títulos Universitarios</h3>
+    <ul>
+      <li *ngFor="let title of profile.titles">{{ title }}</li>
+    </ul>
+  </div>
+</div>

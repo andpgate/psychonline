@@ -56,9 +56,9 @@
 </p-dialog>
 
 <p-dialog header="Cancelar Cita" [(visible)]="displayCancel" [modal]="true" [responsive]="true" [style]="{width: '300px'}">
-  <div class="form-group">
+  <div class="form-group modal-content">
     <label for="motivoCancelacion">Motivo de Cancelación</label>
-    <textarea id="motivoCancelacion" [(ngModel)]="cancelReason" pInputTextarea required></textarea>
+    <textarea id="motivoCancelacion" [(ngModel)]="cancelReason" pInputTextarea required class="cancel-textarea"></textarea>
   </div>
   <p-footer>
     <button type="button" pButton icon="pi pi-check" label="Confirmar" (click)="deleteAppointment()"></button>

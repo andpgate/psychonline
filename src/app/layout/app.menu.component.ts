@@ -169,16 +169,15 @@ export class AppMenuComponent implements OnInit {
 
         this.doctorModel = [
             {
-                label: 'Doctor Home',
+                label: 'Home',
                 items: [
-                    { label: 'Doctor Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/medico'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/medico'] }
                 ]
             },
             {
                 label: 'Gestión de Horario',
                 items: [
-                    { label: 'Mi Horario', icon: 'pi pi-fw pi-calendar', routerLink: ['/medico/horario'] },
-                    { label: 'Solicitudes', icon: 'pi pi-fw pi-envelope', routerLink: ['/medico/citas/solicitudes'] }
+                    { label: 'Mi Horario', icon: 'pi pi-fw pi-calendar', routerLink: ['/medico/horario'] }
                 ]
             },
             {
@@ -187,25 +186,45 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Mis Pacientes', icon: 'pi pi-users', routerLink: ['/medico/pacientes'] }
                 ]
             },
+            {
+                label: 'Citas',
+                items: [
+                    { label: 'Citas pendientes de historia', icon: 'pi pi-clock', routerLink: ['/medico/citas'] },
+                    { label: 'Solicitudes', icon: 'pi pi-fw pi-envelope', routerLink: ['/medico/citas/solicitudes'] }
+                ]
+            },
+            {
+                label: 'Perfil',
+                items: [
+                    { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: ['/medico/profile'] }
+                ]
+            },
             // Otros ítems...
         ];        
         this.patientModel = [
             {
-                label: 'Patient Home',
+                label: 'Home',
                 items: [
-                    { label: 'Patient Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/paciente'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/paciente'] }
                 ]
             },
             {
                 label: 'Gestión de Citas',
                 items: [
-                    { label: 'Ver Citas', icon: 'pi pi-fw pi-calendar', routerLink: ['/paciente/citas'] }
+                    { label: 'Mis Citas', icon: 'pi pi-fw pi-calendar', routerLink: ['/paciente/citas'] },
+                    { label: 'Buscar citas', icon: 'pi pi-fw pi-search', routerLink: ['/paciente/citas/agendadas']}
                 ]
             },
             {
                 label: 'Nuestros Médicos',
                 items: [
                     { label: 'Ver Médicos', icon: 'pi pi-fw pi-users', routerLink: ['/paciente/medicos'] }
+                ]
+            },
+            {
+                label: 'Perfil',
+                items: [
+                    { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: ['/paciente/profile'] }
                 ]
             },
             // Otros ítems...
