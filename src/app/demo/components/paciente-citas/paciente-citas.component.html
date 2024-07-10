@@ -1,0 +1,37 @@
+<div class="citas-container">
+    <div class="estado-tabs">
+      <div *ngFor="let estado of estados"
+           [class.selected]="estado === estadoSeleccionado"
+           (click)="seleccionarEstado(estado)">
+        {{ estado }}
+      </div>
+    </div>
+  
+    <div class="citas-lista">
+      <div *ngFor="let cita of citas[estadoSeleccionado]" class="cita-card">
+        <p><strong>Médico:</strong> {{ cita.nombreMedico }}</p>
+        <p><strong>Fecha:</strong> {{ cita.fecha }}</p>
+        <p><strong>Hora:</strong> {{ cita.hora }}</p>
+        <button *ngIf="(estadoSeleccionado === 'Programadas' || estadoSeleccionado === 'Solicitadas') && puedeCancelar(cita)" 
+                (click)="cancelarCita(cita)" class="cancel-btn">Cancelar</button>
+      </div>
+    </div>
+  
+    <p-dialog [(visible)]="display" modal="true" [closable]="false">
+        <ng-template pTemplate="header">
+            Confirmar Cancelación
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="modal-content">
+                <p>¿Estás seguro de que deseas cancelar esta cita?</p>
+                <textarea pInputTextarea [(ngModel)]="motivoCancelacion" rows="5" placeholder="Motivo de cancelación" class="cancel-textarea"></textarea>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="modal-footer">
+                <button pButton pRipple type="button" label="Cancelar" icon="pi pi-times" (click)="display=false" class="p-button-secondary"></button>
+                <button pButton pRipple type="button" label="Confirmar" icon="pi pi-check" (click)="confirmarCancelacion()" class="p-button"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>
