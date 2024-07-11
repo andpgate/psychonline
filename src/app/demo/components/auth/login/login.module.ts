@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch'; // Import InputSwitchModule
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { InputSwitchModule } from 'primeng/inputswitch'; // Import InputSwitchMo
         InputTextModule,
         FormsModule,
         PasswordModule,
-        InputSwitchModule // Add InputSwitchModule to imports
+        InputSwitchModule, // Add InputSwitchModule to imports
+        HttpClientModule 
     ],
     declarations: [LoginComponent]
 })

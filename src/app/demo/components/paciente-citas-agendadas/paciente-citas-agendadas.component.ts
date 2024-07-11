@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CitasService } from 'src/app/demo/service/paciente/paciente-citas-agendadas.service'; // Asegúrate de importar el servicio correctamente
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-paciente-citas-agendadas',
@@ -21,37 +23,55 @@ export class PacienteCitasAgendadasComponent implements OnInit {
     hora: ''
   };
 
-  constructor() {}
+  constructor(private citasService: CitasService) {}
 
   ngOnInit() {
     this.cargarCitas();
   }
 
   cargarCitas() {
-    // Aquí debes llamar al servicio para cargar las citas disponibles
-    // Simulamos la carga de citas disponibles
-    this.citasDisponibles = [
-      { citaId: 1, medico: 'Dr. Juan Pérez', especialidad: 'Cardiología', fecha: new Date(), hora: '10:00' },
-      { citaId: 2, medico: 'Dra. María López', especialidad: 'Dermatología', fecha: new Date(), hora: '11:00' }
-    ];
+    this.citasService.getCitasAgendadas().subscribe({
+      next: (data) => {
+        this.citasDisponibles = data.map(cita => ({
+          citaId: cita.citaId,
+          medico: cita.nombreCompletoMedico,
+          especialidad: cita.especialidadesMedico.join(', '),
+          fecha: new Date(cita.fechaHora[0], cita.fechaHora[1] - 1, cita.fechaHora[2]),
+          hora: `${cita.fechaHora[3]}:${cita.fechaHora[4]}`
+        }));
+      },
+      error: (err) => {
+        console.error('Error al cargar las citas agendadas', err);
+      }
+    });
   }
 
   buscarCitas() {
-    // Aquí debes llamar al servicio para buscar las citas según los filtros
-    // Simulamos la búsqueda de citas
     const medicoFiltro = this.filters.medico.toLowerCase();
     this.citasDisponibles = this.citasDisponibles.filter(cita => {
       return (!medicoFiltro || cita.medico.toLowerCase().includes(medicoFiltro)) &&
-             (!this.filters.especialidad || cita.especialidad === this.filters.especialidad) &&
+             (!this.filters.especialidad || cita.especialidad.includes(this.filters.especialidad)) &&
              (!this.filters.fecha || new Date(cita.fecha).toDateString() === new Date(this.filters.fecha).toDateString()) &&
              (!this.filters.hora || cita.hora === this.filters.hora);
     });
   }
 
   agendarCita(citaId: number) {
-    // Aquí debes llamar al servicio para agendar la cita
-    // Simulamos el agendamiento de una cita
-    alert('Cita agendada exitosamente');
-    this.cargarCitas(); // Recargar citas disponibles
+    const pacienteId = Number(localStorage.getItem('user_id'));
+    if (pacienteId) {
+      this.citasService.programarCita(citaId, pacienteId).subscribe({
+        next: (response) => {
+          alert(response.message);
+          this.cargarCitas(); // Recargar citas disponibles
+        },
+        error: (err) => {
+          console.error('Error al programar la cita', err);
+          alert('Hubo un error al programar la cita. Intente nuevamente.');
+        }
+      });
+    } else {
+      console.error('No patient ID found in local storage');
+      alert('No se encontró la información del paciente. Intente nuevamente.');
+    }
   }
 }

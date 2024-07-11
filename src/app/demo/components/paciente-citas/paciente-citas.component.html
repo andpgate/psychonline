@@ -12,7 +12,7 @@
         <p><strong>Médico:</strong> {{ cita.nombreMedico }}</p>
         <p><strong>Fecha:</strong> {{ cita.fecha }}</p>
         <p><strong>Hora:</strong> {{ cita.hora }}</p>
-        <button *ngIf="(estadoSeleccionado === 'Programadas' || estadoSeleccionado === 'Solicitadas') && puedeCancelar(cita)" 
+        <button *ngIf="(estadoSeleccionado === 'Programada' || estadoSeleccionado === 'Solicitada')" 
                 (click)="cancelarCita(cita)" class="cancel-btn">Cancelar</button>
       </div>
     </div>

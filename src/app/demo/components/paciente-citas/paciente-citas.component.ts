@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { PacienteCitasService } from 'src/app/demo/service/paciente/paciente-citas.service';
 
 @Component({
   selector: 'app-paciente-citas',
@@ -12,27 +13,37 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
   templateUrl: './paciente-citas.component.html',
   styleUrls: ['./paciente-citas.component.scss']
 })
-export class PacienteCitasComponent {
-  estados = ['Programadas', 'Solicitadas', 'Finalizadas', 'Canceladas', 'Rechazadas'];
-  estadoSeleccionado = 'Programadas';
+export class PacienteCitasComponent implements OnInit {
+  estados = ['Programada', 'Solicitada', 'Finalizada', 'Cancelada', 'Rechazada'];
+  estadoSeleccionado = 'Programada';
   motivoCancelacion = '';
   citaSeleccionada: any = null;
   display: boolean = false;
-
-  citas = {
-    Programadas: [
-      { nombreMedico: 'Dr. Juan Perez', fecha: '2024-07-15', hora: '10:00' },
-      { nombreMedico: 'Dr. Maria Gomez', fecha: '2024-07-16', hora: '14:00' }
-    ],
-    Solicitadas: [
-      { nombreMedico: 'Dr. Pedro Lopez', fecha: '2024-07-20', hora: '09:00' }
-    ],
-    Finalizadas: [
-      { nombreMedico: 'Dr. Ana Martinez', fecha: '2024-06-30', hora: '11:00' }
-    ],
-    Canceladas: [],
-    Rechazadas: []
+  citas: any = {
+    Programada: [],
+    Solicitada: [],
+    Finalizada: [],
+    Cancelada: [],
+    Rechazada: []
   };
+
+  constructor(private pacienteCitasService: PacienteCitasService) {}
+
+  ngOnInit() {
+    const userId = parseInt(localStorage.getItem('user_id') || '0', 10);
+    this.pacienteCitasService.getCitas(userId).subscribe(citas => {
+      citas.forEach(cita => {
+        if (cita.estado in this.citas) {
+          this.citas[cita.estado].push({
+            citaId: cita.citaId,
+            nombreMedico: cita.nombreCompletoMedico,
+            fecha: `${cita.fechaHora[0]}-${cita.fechaHora[1]}-${cita.fechaHora[2]}`,
+            hora: `${cita.fechaHora[3]}:${cita.fechaHora[4]}`
+          });
+        }
+      });
+    });
+  }
 
   seleccionarEstado(estado: string) {
     this.estadoSeleccionado = estado;
@@ -48,25 +59,23 @@ export class PacienteCitasComponent {
     const fechaCita = new Date(this.citaSeleccionada.fecha);
     const diffTime = Math.abs(fechaCita.getTime() - fechaActual.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+  
     if (diffDays >= 2) {
-      // Lógica para cancelar la cita
-      console.log('Cita cancelada:', this.citaSeleccionada, 'Motivo:', this.motivoCancelacion);
-      this.citas[this.estadoSeleccionado] = this.citas[this.estadoSeleccionado].filter(c => c !== this.citaSeleccionada);
-      this.citas.Canceladas.push({ ...this.citaSeleccionada, motivo: this.motivoCancelacion });
-      this.display = false;
-      this.motivoCancelacion = '';
+      this.pacienteCitasService.cancelarCita(this.citaSeleccionada.citaId).subscribe({
+        next: (response) => {
+          console.log('Cita cancelada:', this.citaSeleccionada);
+          console.log('Respuesta del servidor:', response.message);
+          this.citas[this.estadoSeleccionado] = this.citas[this.estadoSeleccionado].filter(c => c !== this.citaSeleccionada);
+          this.citas.Cancelada.push({ ...this.citaSeleccionada });
+          this.display = false;
+        },
+        error: (err) => {
+          console.error('Error al cancelar la cita', err);
+          // Maneja el error de cancelación
+        }
+      });
     } else {
       console.log('No se puede cancelar la cita con menos de 2 días de antelación.');
     }
-  }
-
-  puedeCancelar(cita: any): boolean {
-    const fechaActual = new Date();
-    const fechaCita = new Date(cita.fecha);
-    const diffTime = Math.abs(fechaCita.getTime() - fechaActual.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    return diffDays >= 2;
-  }
+  }  
 }

@@ -1,19 +1,19 @@
-<div class="profile-container">
+<div *ngIf="profile" class="profile-container">
   <div class="profile-header">
-    <img [src]="profile.imageUrl" alt="Profile Image" class="profile-image">
-    <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
+    <img [src]="profile.imagen" alt="Profile Image" class="profile-image">
+    <h2>{{ profile.nombreCompleto }}</h2>
     <p class="username">Nombre de usuario: {{ profile.username }}</p>
     <p class="email">Email: {{ profile.email }}</p>
-    <p class="phone">Teléfono: {{ profile.phone }}</p>
+    <p class="phone">Teléfono: {{ profile.telefono }}</p>
   </div>
 
   <div class="profile-details">
-    <h3>Especialidad</h3>
-    <p>{{ profile.specialty }}</p>
+    <h3>Especialidades</h3>
+    <p>{{ profile.especialidades }}</p>
 
     <h3>Títulos Universitarios</h3>
     <ul>
-      <li *ngFor="let title of profile.titles">{{ title }}</li>
+      <li *ngFor="let titulo of profile.titulos">{{ titulo }}</li>
     </ul>
   </div>
 </div>

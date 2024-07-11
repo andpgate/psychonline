@@ -1,26 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MedicoService } from 'src/app/demo/service/medico/medico-profile.service'; // Asegúrate de importar el servicio correctamente
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],  // Asegúrate de importar CommonModule
+  imports: [CommonModule, HttpClientModule],  // Asegúrate de importar CommonModule y HttpClientModule
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  profile = {
-    firstName: 'Juan',
-    lastName: 'Pérez',
-    username: 'j.perez',
-    email: 'juan.perez@example.com',
-    phone: '+123456789',
-    imageUrl: 'assets/profile-image.jpg', // Ruta a la imagen del perfil
-    specialty: 'Cardiología',
-    titles: ['Doctor en Medicina', 'Especialista en Cardiología', 'Máster en Salud Pública'] // Asegúrate de que este array tenga datos
-  };
+  profile: any = null;
+
+  constructor(private medicoService: MedicoService) {}
 
   ngOnInit(): void {
-    // Aquí puedes cargar los datos del perfil del médico desde una API o servicio
+    const medicoId = 1; // Cambia esto por la forma en que obtienes la ID del médico
+    this.medicoService.getPerfilMedico(medicoId).subscribe({
+      next: (data) => {
+        this.profile = {
+          imagen: data.imagen || 'assets/profile-image.jpg', // Ruta a la imagen del perfil
+          nombreCompleto: data.nombreCompleto,
+          username: data.username,
+          email: data.email,
+          telefono: data.telefono,
+          especialidades: data.especialidades.join(', '), // Asumiendo que las especialidades se muestran como una lista separada por comas
+          titulos: data.titulos ? data.titulos.split(', ') : []
+        };
+      },
+      error: (err) => {
+        console.error('Error al cargar el perfil del médico', err);
+      }
+    });
   }
 }

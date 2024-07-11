@@ -1,45 +1,45 @@
 <div class="container">
     <div class="search-bar">
-      <input type="text" placeholder="Buscar médico" [(ngModel)]="searchText" (input)="applyFilters()" />
-      <div class="filters">
-        <select [(ngModel)]="selectedSpecialty" (change)="applyFilters()">
-          <option value="">Especialidad</option>
-          <option *ngFor="let specialty of specialties" [value]="specialty">{{specialty}}</option>
-        </select>
-        <select [(ngModel)]="selectedRating" (change)="applyFilters()">
-          <option value="">Calificación</option>
-          <option *ngFor="let rating of ratings" [value]="rating">{{rating}} estrellas</option>
-        </select>
-      </div>
+        <input type="text" placeholder="Buscar médico" [(ngModel)]="searchText" (input)="applyFilters()" />
+        <div class="filters">
+            <select [(ngModel)]="selectedSpecialty" (change)="applyFilters()">
+                <option value="">Especialidad</option>
+                <option *ngFor="let specialty of specialties" [value]="specialty">{{specialty}}</option>
+            </select>
+            <select [(ngModel)]="selectedRating" (change)="applyFilters()">
+                <option value="">Calificación</option>
+                <option *ngFor="let rating of ratings" [value]="rating">{{rating}} estrellas</option>
+            </select>
+        </div>
     </div>
   
     <div class="doctor-list">
-      <div *ngFor="let doctor of filteredDoctors" class="doctor-card">
-        <h3>{{ doctor.name }}</h3>
-        <p>Especialidad: {{ doctor.specialty }}</p>
-        <p>Calificación: {{ doctor.rating }} estrellas</p>
-        <button (click)="viewMoreInfo(doctor)">Más Información</button>
-        <button (click)="requestAppointment(doctor)">Solicitar Cita</button>
-      </div>
+        <div *ngFor="let doctor of filteredDoctors" class="doctor-card">
+            <h3>{{ doctor.name }}</h3>
+            <p>Especialidad: {{ doctor.specialty }}</p>
+            <p>Calificación: {{ doctor.rating }} estrellas</p>
+            <button (click)="viewMoreInfo(doctor)">Más Información</button>
+            <button (click)="requestAppointment(doctor)">Solicitar Cita</button>
+        </div>
     </div>
   
     <p-dialog header="Nueva Cita" [(visible)]="display" [modal]="true" [responsive]="true" [style]="{width: '300px'}">
-      <div class="form-group">
-        <label for="doctorName">Médico</label>
-        <input type="text" id="doctorName" [value]="selectedDoctor?.name" pInputText disabled />
-      </div>
-      <div class="form-group">
-        <label for="fecha">Fecha</label>
-        <input type="date" pInputText id="fecha" [(ngModel)]="newAppointmentDate">
-      </div>
-      <div class="form-group">
-        <label for="hora">Hora</label>
-        <input type="time" pInputText id="hora" [(ngModel)]="newAppointmentTime">
-      </div>
-      <p-footer>
-        <button type="button" pButton icon="pi pi-check" label="Crear" (click)="createAppointment()"></button>
-        <button type="button" pButton icon="pi pi-times" label="Cancelar" (click)="closeDialog()"></button>
-      </p-footer>
+        <div class="form-group">
+            <label for="doctorName">Médico</label>
+            <input type="text" id="doctorName" [value]="selectedDoctor?.name" pInputText disabled />
+        </div>
+        <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" pInputText id="fecha" [(ngModel)]="newAppointmentDate">
+        </div>
+        <div class="form-group">
+            <label for="hora">Hora</label>
+            <input type="time" pInputText id="hora" [(ngModel)]="newAppointmentTime">
+        </div>
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" label="Crear" (click)="createAppointment()"></button>
+            <button type="button" pButton icon="pi pi-times" label="Cancelar" (click)="closeDialog()"></button>
+        </p-footer>
     </p-dialog>
   </div>
   

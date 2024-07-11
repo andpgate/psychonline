@@ -1,16 +1,15 @@
-<div class="profile-container">
-    <div class="profile-header">
-      <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
-      <p class="username">Usuario: {{ profile.username }}</p>
-      <p class="email">Email: {{ profile.email }}</p>
-      <p class="phone">Teléfono: {{ profile.phone }}</p>
-    </div>
-  
-    <div class="profile-details">
-      <h3>Historias Médicas</h3>
-      <ul>
-        <li *ngFor="let historia of profile.historiasMedicas">{{ historia }}</li>
-      </ul>
-    </div>
+<div *ngIf="profile" class="profile-container">
+  <div class="profile-header">
+    <h2>{{ profile.nombreCompleto }}</h2>
+    <p class="username">Usuario: {{ profile.username }}</p>
+    <p class="email">Email: {{ profile.email }}</p>
+    <p class="phone">Teléfono: {{ profile.telefono }}</p>
   </div>
-  
+
+  <div class="profile-details">
+    <h3>Historias Médicas</h3>
+    <ul>
+      <li *ngFor="let historia of profile.historias">{{ historia }}</li>
+    </ul>
+  </div>
+</div>
