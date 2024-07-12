@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
+import { inject } from '@angular/core';
+import { AuthService } from 'src/app/demo/service/auth.service';
 
 @Component({
     selector: 'app-topbar',
@@ -15,14 +17,9 @@ export class AppTopBarComponent {
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService, private router: Router) { }
+    constructor(public layoutService: LayoutService, private router: Router, private authService: AuthService) { }
 
     logout() {
-        // Borra el localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('selectedDoctorId');
-        // Redirige al usuario a la página de inicio (landing)
-        this.router.navigate(['/landing']);
-    }
+        this.authService.logout(); // Llama al método de logout del AuthService
+      }
 }

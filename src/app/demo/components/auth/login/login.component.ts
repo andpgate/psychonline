@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/demo/service/auth/auth.services'; // Import AuthService
+import { AuthService } from 'src/app/demo/service/auth.service'; // Import AuthService
 
 @Component({
     selector: 'app-login',
@@ -30,31 +30,39 @@ import { AuthService } from 'src/app/demo/service/auth/auth.services'; // Import
   
     login() {
       if (this.isTerapeuta) {
-        this.authService.loginMedico(this.username, this.password).subscribe({
-          next: (response) => {
-            // Guarda el token y la id en el localStorage
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user_id', response.id.toString());
-            this.router.navigate(['/medico']);
-          },
-          error: (err) => {
-            console.error('Login failed', err);
-            // Maneja el error de login
-          }
-        });
+        this.loginMedico(); // Llama al método para login de médico si isTerapeuta es true
       } else {
-        this.authService.loginPaciente(this.username, this.password).subscribe({
-          next: (response) => {
-            // Guarda el token y la id en el localStorage
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user_id', response.id.toString());
-            this.router.navigate(['/paciente']);
-          },
-          error: (err) => {
-            console.error('Login failed', err);
-            // Maneja el error de login
-          }
-        });
+        this.loginPaciente(); // Llama al método para login de paciente si isTerapeuta es false
+      }
+    }
+  
+    private loginPaciente() {
+      this.authService.loginPaciente(this.username, this.password).subscribe({
+        next: () => {
+          this.handleLoginRedirect(false);
+        },
+        error: () => {
+          console.log('Login failed');
+        }
+      });
+    }
+  
+    private loginMedico() {
+      this.authService.loginMedico(this.username, this.password).subscribe({
+        next: () => {
+          this.handleLoginRedirect(true);
+        },
+        error: () => {
+          console.log('Login failed');
+        }
+      });
+    }
+  
+    private handleLoginRedirect(isDoctor: boolean) {
+      if (isDoctor) {
+        this.router.navigate(['/medico']);
+      } else {
+        this.router.navigate(['/paciente']);
       }
     }
   }

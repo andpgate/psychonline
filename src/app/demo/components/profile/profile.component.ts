@@ -20,7 +20,6 @@ export class ProfileComponent implements OnInit {
     this.medicoService.getPerfilMedico(medicoId).subscribe({
       next: (data) => {
         this.profile = {
-          imagen: data.imagen || 'assets/profile-image.jpg', // Ruta a la imagen del perfil
           nombreCompleto: data.nombreCompleto,
           username: data.username,
           email: data.email,
